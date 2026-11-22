@@ -836,11 +836,11 @@
       <div class="summary-grid">
         <div class="summary-box">
           <h4>പുഷ്പങ്ങൾ</h4>
-                     <div id="summaryFlowersList"></div>
+                       <ul class="summary-list" id="summaryFlowersList"></ul>
         </div>
         <div class="summary-box garland-box">
           <h4>മാലകൾ</h4>
-          <div id="summaryGarlandsList"></div>
+          <ul class="summary-list" id="summaryGarlandsList"></ul>
         </div>
       </div>
     </section>
@@ -886,7 +886,7 @@
     ];
 
     const ALLOWED_UNITS = ["kg", "അടി", "മുഴം", "എണ്ണം"];
-    const STORAGE_KEY = "malayalam_flower_garland_list_2026_v4";
+    const STORAGE_KEY = "malayalam_flower_garland_list_2026_v5";
     let activeDateId = DATES_CONFIG[0].id;
     let appState = loadState();
 
@@ -1022,16 +1022,14 @@
             onchange="toggleItemCheck('${categoryKey}', ${index}, this.checked)" />
           <div class="item-name-wrap" onclick="toggleItemCheck('${categoryKey}', ${index}, ${!isChecked})">
             <span class="item-name">${item.name}</span>
-            <span class="item-sub">${isChecked ? "തിരഞ്ഞെടുത്തു" : "ക്ലിക്ക് ചെയ്യുക"}</span>
+            <span class="item-sub">${isChecked ? `അളവ്: ${item.qty || 1} ${item.unit}` : "തിരഞ്ഞെടുക്കാൻ ക്ലിക്ക് ചെയ്യുക"}</span>
           </div>
-          <div class="qty-col-cell">
-            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, -1)">−</button>
-            <input type="number" class="qty-input" min="0" step="any" placeholder="0"
+          <div class="qty-controls">
+            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, -0.5)">−</button>
+            <input type="number" class="qty-input" min="0" step="0.25" placeholder="0"
               value="${item.qty}"
               oninput="updateQuantity('${categoryKey}', ${index}, this.value)" />
-            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, 1)">+</button>
-          </div>
-          <div class="unit-col-cell">
+            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, 0.5)">+</button>
             <select class="unit-select" onchange="updateUnit('${categoryKey}', ${index}, this.value)">
               ${unitOptions}
             </select>
@@ -1066,7 +1064,8 @@
     function stepQuantity(categoryKey, index, delta) {
       const item = appState[activeDateId][categoryKey][index];
       let current = parseFloat(item.qty) || 0;
-      let next = Math.max(0, Math.round((current + delta) * 100) / 100);
+      const effectiveDelta = item.unit === "എണ്ണം" ? (delta > 0 ? 1 : -1) : delta;
+      let next = Math.max(0, Math.round((current + effectiveDelta) * 100) / 100);
       item.qty = next > 0 ? String(next) : "";
       item.selected = next > 0;
       saveState();
@@ -1134,30 +1133,13 @@
       showToast(`${activeDateId}-ലെ ലിസ്റ്റ് ക്ലിയർ ചെയ്തു`);
     }
 
-    function buildSummaryTableHtml(items, emptyText) {
+    function buildSummaryListHtml(items, emptyText) {
       if (!items.length) {
-        return `<p class="empty-msg">${emptyText}</p>`;
+        return `<li class="empty-msg">${emptyText}</li>`;
       }
-      const rows = items.map(item => `
-        <tr>
-          <td>${item.name}</td>
-          <td class="num-col">${item.qty || 1}</td>
-          <td class="unit-col">${item.unit}</td>
-        </tr>
-      `).join("");
-
-      return `
-        <table class="summary-table">
-          <thead>
-            <tr>
-              <th>ഇനം</th>
-              <th class="num-col">എണ്ണം</th>
-              <th class="unit-col">യൂണിറ്റ്</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      `;
+      return items
+        .map(item => `<li><span>${item.name}</span><span class="summary-qty">${item.qty || 1} ${item.unit}</span></li>`)
+        .join("");
     }
 
     function renderSummary() {
@@ -1174,9 +1156,9 @@
         `📋 ${dateObj.label} (${dateObj.dayMl})${timeStr}${noteStr}`;
 
       document.getElementById("summaryFlowersList").innerHTML =
-        buildSummaryTableHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
+        buildSummaryListHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
       document.getElementById("summaryGarlandsList").innerHTML =
-        buildSummaryTableHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
+        buildSummaryListHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
     }
 
     function renderAll() {
@@ -1211,13 +1193,13 @@
 
       if (flowers.length > 0) {
         lines.push("*പുഷ്പങ്ങൾ:*");
-        flowers.forEach((f, idx) => lines.push(`${idx + 1}. ${f.name} — ${f.qty || 1} — ${f.unit}`));
+        flowers.forEach((f, idx) => lines.push(`${idx + 1}. ${f.name} - ${f.qty || 1} ${f.unit}`));
         lines.push("");
       }
 
       if (garlands.length > 0) {
         lines.push("*മാലകൾ:*");
-        garlands.forEach((g, idx) => lines.push(`${idx + 1}. ${g.name} — ${g.qty || 1} — ${g.unit}`));
+        garlands.forEach((g, idx) => lines.push(`${idx + 1}. ${g.name} - ${g.qty || 1} ${g.unit}`));
       }
 
       navigator.clipboard.writeText(lines.join("\n")).then(() => {
@@ -1264,11 +1246,11 @@
               <div class="summary-grid">
                 <div class="summary-box">
                   <h4>പുഷ്പങ്ങൾ</h4>
-                  ${buildSummaryTableHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}
+                  <ul class="summary-list">${buildSummaryListHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}</ul>
                 </div>
                 <div class="summary-box garland-box">
                   <h4>മാലകൾ</h4>
-                  ${buildSummaryTableHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}
+                  <ul class="summary-list">${buildSummaryListHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}</ul>
                 </div>
               </div>
             </div>
@@ -1284,5 +1266,5 @@
     renderAll();
   </script>
 </body>
-</html>
-
+  </html>
+  
