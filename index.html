@@ -1,1 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>പുഷ്പങ്ങൾ & മാലകൾ ലിസ്റ്റ് (24-11-2026 to 02-12-2026)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --bg: #fdfaf5;
+      --surface: #ffffff;
+      --surface-soft: #f8f2e7;
+      --surface-warm: #fff6e8;
+      --border: #e6d8c3;
+      --border-strong: #d4be9c;
+      --text: #2c1e12;
+      --text-muted: #6e5844;
+      --primary: #9c2b23;       /* Temple Kumkum Red */
+      --primary-dark: #781d17;
+      --primary-soft: #fbeae8;
+      --gold: #b4690e;          /* Marigold / Brass Gold */
+      --gold-soft: #fef3c7;
+      --green: #1e6b43;         /* Tulsi Green */
+      --green-soft: #e6f4ec;
+      --shadow-sm: 0 2px 8px rgba(44, 30, 18, 0.05);
+      --shadow-md: 0 8px 24px rgba(44, 30, 18, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif;
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(180, 105, 14, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 48px;
+    }
+
+    /* Header */
+    .app-header {
+      background: linear-gradient(135deg, #7c1d16 0%, #9c2b23 55%, #b45309 100%);
+      color: #fff;
+      padding: 20px 16px 24px;
+      box-shadow: 0 4px 16px rgba(124, 29, 22, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: "✿ ❁ ❀";
+      position: absolute;
+      right: 20px;
+      top: 14px;
+      font-size: 26px;
+      opacity: 0.16;
+      letter-spacing: 8px;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand p {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-pdf-single {
+      background: #ffffff;
+      color: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .btn-pdf-single:hover {
+      background: #fff7ed;
+    }
+
+    .btn-pdf-all {
+      background: #fbbf24;
+      color: #3b1d06;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+    }
+
+    .btn-pdf-all:hover {
+      background: #f59e0b;
+    }
+
+    .btn-outline-light {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    /* 9-Day Date Strip */
+    .date-strip-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      margin-top: -16px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      z-index: 5;
+    }
+
+    .date-strip-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .date-tabs {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(96px, 1fr));
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .date-tab {
+      background: var(--surface-soft);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      position: relative;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .date-tab:hover {
+      border-color: var(--gold);
+      background: var(--surface-warm);
+    }
+
+    .date-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(156, 43, 35, 0.28);
+    }
+
+    .date-tab .dt-day {
+      font-size: 0.72rem;
+      font-weight: 700;
+      opacity: 0.85;
+      display: block;
+    }
+
+    .date-tab .dt-num {
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: block;
+      margin: 2px 0;
+    }
+
+    .date-tab .dt-count {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 99px;
+      background: rgba(44, 30, 18, 0.08);
+      color: var(--text-muted);
+    }
+
+    .date-tab.has-items:not(.active) {
+      border-color: var(--green);
+      background: #f4fbf7;
+    }
+
+    .date-tab.has-items:not(.active) .dt-count {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .date-tab.active .dt-count {
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+
+    /* Active Date Meta Bar */
+    .meta-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-top: 16px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 1.2fr 1.3fr 0.85fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .selected-date-display {
+      background: var(--surface-warm);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+
+    .selected-date-display .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+    }
+
+    .selected-date-display .value {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-group label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .field-input {
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+
+    .field-input:focus {
+      border-color: var(--primary);
+    }
+
+    .meta-quick-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-soft {
+      background: var(--surface-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 11px;
+      font-size: 0.8rem;
+    }
+
+    .btn-soft:hover {
+      background: var(--surface-warm);
+      border-color: var(--gold);
+    }
+
+    /* Two Category Columns */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .category-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .category-header {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-card.flowers .category-header {
+      background: linear-gradient(90deg, #fff5f5 0%, #fffbeb 100%);
+      border-left: 5px solid var(--primary);
+    }
+
+    .category-card.garlands .category-header {
+      background: linear-gradient(90deg, #f0fdf4 0%, #fffbeb 100%);
+      border-left: 5px solid var(--green);
+    }
+
+    .category-title {
+      font-size: 1.18rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-card.flowers .category-title {
+      color: var(--primary-dark);
+    }
+
+    .category-card.garlands .category-title {
+      color: var(--green);
+    }
+
+    .cat-badge {
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: rgba(44, 30, 18, 0.07);
+      color: var(--text-muted);
+    }
+
+    .item-list {
+      padding: 10px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 26px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid #efe6d8;
+      background: #fffdf9;
+      transition: all 0.16s ease;
+    }
+
+    .item-row.active-item {
+      border-color: #86efac;
+      background: #f5fcf7;
+      box-shadow: 0 2px 6px rgba(30, 107, 67, 0.06);
+    }
+
+    .item-check {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    .item-name-wrap {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .item-name {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .item-row.active-item .item-name {
+      color: #14532d;
+    }
+
+    .item-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .step-btn {
+      width: 30px;
+      height: 32px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 7px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .step-btn:hover {
+      background: #eadbc4;
+    }
+
+    .qty-input {
+      width: 64px;
+      height: 32px;
+      text-align: center;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    .qty-input:focus {
+      border-color: var(--primary);
+    }
+
+    .unit-select {
+      height: 32px;
+      padding: 0 8px;
+      font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 700;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 7px;
+      background: var(--surface-warm);
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .unit-select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Optional Custom Item Bar */
+    .custom-add-row {
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      gap: 6px;
+    }
+
+    .custom-add-row input {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.84rem;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .btn-tiny {
+      padding: 7px 11px;
+      font-size: 0.8rem;
+      background: var(--surface-soft);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+    }
+
+    .btn-tiny:hover {
+      background: var(--gold-soft);
+    }
+
+    /* Live Summary Preview Card */
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-top: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .summary-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-header h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .summary-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .summary-box h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+    }
+
+    .summary-box.garland-box h4 {
+      color: var(--green);
+    }
+
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e6d8c3;
+    }
+
+    .summary-list li:last-child {
+      border-bottom: none;
+    }
+
+    .summary-qty {
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .empty-msg {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2c1e12;
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hidden Print / PDF Container */
+    #pdf-render-area {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 780px;
+      background: #ffffff;
+      color: #111827;
+      font-family: 'Noto Sans Malayalam', 'Manrope', sans-serif;
+      padding: 24px;
+    }
+
+    .pdf-page-block {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      background: #fff;
+      page-break-inside: avoid;
+    }
+
+    .pdf-top-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #9c2b23;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pdf-date-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #7c1d16;
+    }
+
+    .pdf-meta-right {
+      text-align: right;
+      font-size: 12.5px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .pdf-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .pdf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .pdf-table th {
+      background: #fef3c7;
+      color: #78350f;
+      text-align: left;
+      padding: 7px 10px;
+      border: 1px solid #d1d5db;
+      font-weight: 800;
+    }
+
+    .pdf-table td {
+      padding: 6px 10px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .pdf-table td.qty-col {
+      text-align: right;
+      font-weight: 700;
+      width: 36%;
+    }
+
+    @media (max-width: 860px) {
+      .meta-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .categories-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .meta-bar {
+        grid-template-columns: 1fr;
+      }
+      .item-row {
+        grid-template-columns: 22px 1fr;
+        gap: 8px;
+      }
+      .qty-controls {
+        grid-column: 2;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container">
+      <div class="header-top">
+        <div class="brand">
+          <h1>🌺 പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h1>
+          <p>തീയതി: 24-11-2026 മുതൽ 02-12-2026 വരെ (9 ദിവസത്തെ പ്രത്യേക ലിസ്റ്റ്)</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-pdf-single" onclick="downloadSingleDatePDF()" title="തിരഞ്ഞെടുത്ത തീയതിയുടെ PDF ഡൗൺലോഡ് ചെയ്യുക">
+            📄 ഈ ദിവസത്തെ PDF
+          </button>
+          <button class="btn btn-pdf-all" onclick="downloadAllDatesPDF()" title="9 ദിവസത്തെയും മുഴുവൻ ലിസ്റ്റ് PDF ആയി ഡൗൺലോഡ് ചെയ്യുക">
+            📚 9 ദിവസത്തെയും PDF
+          </button>
+          <button class="btn btn-outline-light" onclick="copyCurrentListText()">
+            📋 കോപ്പി
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 9-Day Date Selector -->
+    <section class="date-strip-card">
+      <div class="date-strip-label">
+        <span>തീയതി തിരഞ്ഞെടുക്കുക (24-11-2026 – 02-12-2026)</span>
+        <span id="overallStatusText">ആകെ തിരഞ്ഞെടുത്ത ദിവസങ്ങൾ: 0 / 9</span>
+      </div>
+      <div class="date-tabs" id="dateTabsContainer"></div>
+    </section>
+
+    <!-- Selected Date & Time Controls -->
+    <section class="meta-bar">
+      <div class="selected-date-display">
+        <span class="label">തിരഞ്ഞെടുത്ത തീയതി (Selected Date)</span>
+        <span class="value" id="activeDateHeading">24-11-2026 (ചൊവ്വ)</span>
+      </div>
+
+      <div class="field-group">
+        <label for="eventTitleInput">ചടങ്ങ് / ക്ഷേത്രം / കുറിപ്പ് (Event / Notes)</label>
+        <input type="text" id="eventTitleInput" class="field-input" placeholder="ഉദാ: പ്രഭാത പൂജ / ഉത്സവം..." oninput="updateDateMeta()" />
+      </div>
+
+      <div class="field-group">
+        <label for="eventTimeInput">സമയം (Time)</label>
+        <input type="time" id="eventTimeInput" class="field-input" oninput="updateDateMeta()" />
+      </div>
+
+      <div class="meta-quick-btns">
+        <button class="btn btn-soft" onclick="copyFromPreviousDay()" title="തൊട്ടുമുമ്പത്തെ ദിവസത്തെ ലിസ്റ്റ് ഈ ദിവസത്തേക്ക് പകർത്തുക">
+          📥 തലേദിവസത്തെ ലിസ്റ്റ് പകർത്തുക
+        </button>
+        <button class="btn btn-soft" onclick="clearCurrentDay()" title="ഈ ദിവസത്തെ അളവുകൾ മായ്ക്കുക">
+          🗑️ ക്ലിയർ
+        </button>
+      </div>
+    </section>
+
+    <!-- Two Main Headings: പുഷ്പങ്ങൾ & മാലകൾ -->
+    <section class="categories-grid">
+      <!-- Category 1: പുഷ്പങ്ങൾ -->
+      <div class="category-card flowers">
+        <div class="category-header">
+          <h2 class="category-title">🌸 പുഷ്പങ്ങൾ</h2>
+          <span class="cat-badge" id="flowersBadge">0 എണ്ണം</span>
+        </div>
+        <div class="item-list" id="flowersListContainer"></div>
+      </div>
+
+      <!-- Category 2: മാലകൾ -->
+      <div class="category-card garlands">
+        <div class="category-header">
+          <h2 class="category-title">📿 മാലകൾ</h2>
+          <span class="cat-badge" id="garlandsBadge">0 എണ്ണം</span>
+        </div>
+        <div class="item-list" id="garlandsListContainer"></div>
+      </div>
+    </section>
+
+    <!-- Live Summary Under Selected Date -->
+    <section class="summary-card">
+      <div class="summary-header">
+        <h3 id="summaryHeading">📋 24-11-2026 - ലിസ്റ്റ് സംഗ്രഹം</h3>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">അളവുകൾ: kg, അടി, മുഴം, എണ്ണം</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-box">
+          <h4>പുഷ്പങ്ങൾ</h4>
+                    <ul class="summary-list" id="summaryFlowersList"></ul>
+        </div>
+        <div class="summary-box garland-box">
+          <h4>മാലകൾ</h4>
+          <ul class="summary-list" id="summaryGarlandsList"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Hidden Area Used to Render Clean PDFs -->
+  <div id="pdf-render-area"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // 1. Fixed 9 Dates from 24-11-2026 to 02-12-2026
+    const DATES_CONFIG = [
+      { id: "24-11-2026", label: "24-11-2026", dayMl: "ചൊവ്വ", dayEn: "Tue" },
+      { id: "25-11-2026", label: "25-11-2026", dayMl: "ബുധൻ", dayEn: "Wed" },
+      { id: "26-11-2026", label: "26-11-2026", dayMl: "വ്യാഴം", dayEn: "Thu" },
+      { id: "27-11-2026", label: "27-11-2026", dayMl: "വെള്ളി", dayEn: "Fri" },
+      { id: "28-11-2026", label: "28-11-2026", dayMl: "ശനി", dayEn: "Sat" },
+      { id: "29-11-2026", label: "29-11-2026", dayMl: "ഞായർ", dayEn: "Sun" },
+      { id: "30-11-2026", label: "30-11-2026", dayMl: "തിങ്കൾ", dayEn: "Mon" },
+      { id: "01-12-2026", label: "01-12-2026", dayMl: "ചൊവ്വ", dayEn: "Tue" },
+      { id: "02-12-2026", label: "02-12-2026", dayMl: "ബുധൻ", dayEn: "Wed" }
+    ];
+
+    // 2. Exact Master Lists Requested by User
+    const DEFAULT_FLOWERS = [
+      { name: "ചെത്തി", defaultUnit: "kg" },
+      { name: "തുളസി", defaultUnit: "kg" },
+      { name: "റോസ് ഉതിർ", defaultUnit: "kg" },
+      { name: "താമര", defaultUnit: "എണ്ണം" }
+    ];
+
+    const DEFAULT_GARLANDS = [
+      { name: "മുല്ലമാല", defaultUnit: "മുഴം" },
+      { name: "കെട്ടുമാല", defaultUnit: "എണ്ണം" },
+      { name: "ഗീതാഞ്ജലി", defaultUnit: "എണ്ണം" },
+      { name: "ചെത്തി കെട്ടുമാല", defaultUnit: "എണ്ണം" },
+      { name: "തുളസികെട്ടുമാല", defaultUnit: "എണ്ണം" },
+      { name: "ചെത്തി തുളസി കെട്ടുമാല", defaultUnit: "എണ്ണം" },
+      { name: "വെള്ള മാല", defaultUnit: "എണ്ണം" },
+      { name: "ചില്ലി റോസ് മാല", defaultUnit: "എണ്ണം" },
+      { name: "താമര മാല", defaultUnit: "എണ്ണം" },
+      { name: "തുമ്പികൈ മാല", defaultUnit: "എണ്ണം" }
+    ];
+
+    // 3. Four Allowed Quantity Units
+    const ALLOWED_UNITS = ["kg", "അടി", "മുഴം", "എണ്ണം"];
+
+    const STORAGE_KEY = "malayalam_flower_garland_list_2026_v2";
+    let activeDateId = DATES_CONFIG[0].id;
+    let appState = loadState();
+
+    function createBlankDayData() {
+      return {
+        time: "06:00",
+        note: "",
+        flowers: DEFAULT_FLOWERS.map(f => ({
+          name: f.name,
+          qty: "",
+          unit: f.defaultUnit,
+          selected: false
+        })),
+        garlands: DEFAULT_GARLANDS.map(g => ({
+          name: g.name,
+          qty: "",
+          unit: g.defaultUnit,
+          selected: false
+        }))
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          DATES_CONFIG.forEach(d => {
+            if (!parsed[d.id]) {
+              parsed[d.id] = createBlankDayData();
+            } else {
+              ['flowers', 'garlands'].forEach(cat => {
+                parsed[d.id][cat].forEach(item => {
+                  if (!ALLOWED_UNITS.includes(item.unit)) {
+                    item.unit = "kg";
+                  }
+                });
+              });
+            }
+          });
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to load saved list:", e);
+      }
+      const initial = {};
+      DATES_CONFIG.forEach(d => {
+        initial[d.id] = createBlankDayData();
+      });
+      return initial;
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error("Failed to save list:", e);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    function formatTime12Hour(time24) {
+      if (!time24) return "";
+      const [hStr, mStr] = time24.split(":");
+      let h = parseInt(hStr, 10);
+      const ampm = h >= 12 ? "PM" : "AM";
+      h = h % 12 || 12;
+      return `${h}:${mStr} ${ampm}`;
+    }
+
+    function getActiveItemsForDate(dateId) {
+      const day = appState[dateId];
+      const flowers = day.flowers.filter(i => i.selected || (parseFloat(i.qty) > 0));
+      const garlands = day.garlands.filter(i => i.selected || (parseFloat(i.qty) > 0));
+      return { flowers, garlands, total: flowers.length + garlands.length };
+    }
+
+    function renderDateTabs() {
+      const container = document.getElementById("dateTabsContainer");
+      container.innerHTML = "";
+      let activeDaysCount = 0;
+
+      DATES_CONFIG.forEach(dateObj => {
+        const { total } = getActiveItemsForDate(dateObj.id);
+        if (total > 0) activeDaysCount++;
+
+        const btn = document.createElement("button");
+        btn.className = `date-tab ${dateObj.id === activeDateId ? "active" : ""} ${total > 0 ? "has-items" : ""}`;
+        btn.onclick = () => {
+          activeDateId = dateObj.id;
+          renderAll();
+        };
+
+        btn.innerHTML = `
+          <span class="dt-day">${dateObj.dayMl}</span>
+          <span class="dt-num">${dateObj.label.slice(0, 5)}</span>
+          <span class="dt-count">${total > 0 ? total + " ഇനം" : "ഒഴിവ്"}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      document.getElementById("overallStatusText").textContent =
+        `ലിസ്റ്റ് തയ്യാറാക്കിയ ദിവസങ്ങൾ: ${activeDaysCount} / 9`;
+    }
+
+    function renderCategoryItems(categoryKey, containerId) {
+      const container = document.getElementById(containerId);
+      const items = appState[activeDateId][categoryKey];
+      container.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const hasQty = parseFloat(item.qty) > 0;
+        const isChecked = item.selected || hasQty;
+
+        const row = document.createElement("div");
+        row.className = `item-row ${isChecked ? "active-item" : ""}`;
+
+        const unitOptions = ALLOWED_UNITS.map(u =>
+          `<option value="${u}" ${item.unit === u ? "selected" : ""}>${u}</option>`
+        ).join("");
+
+        row.innerHTML = `
+          <input type="checkbox" class="item-check" ${isChecked ? "checked" : ""}
+            onchange="toggleItemCheck('${categoryKey}', ${index}, this.checked)" />
+          <div class="item-name-wrap" onclick="toggleItemCheck('${categoryKey}', ${index}, ${!isChecked})">
+            <span class="item-name">${item.name}</span>
+            <span class="item-sub">${isChecked ? `അളവ്: ${item.qty || 1} ${item.unit}` : "തിരഞ്ഞെടുക്കാൻ ക്ലിക്ക് ചെയ്യുക"}</span>
+          </div>
+          <div class="qty-controls">
+            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, -0.5)">−</button>
+            <input type="number" class="qty-input" min="0" step="0.25" placeholder="0"
+              value="${item.qty}"
+              oninput="updateQuantity('${categoryKey}', ${index}, this.value)" />
+            <button type="button" class="step-btn" onclick="stepQuantity('${categoryKey}', ${index}, 0.5)">+</button>
+            <select class="unit-select" onchange="updateUnit('${categoryKey}', ${index}, this.value)">
+              ${unitOptions}
+            </select>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      const customDiv = document.createElement("div");
+      customDiv.className = "custom-add-row";
+      const inputId = `customInput_${categoryKey}`;
+      customDiv.innerHTML = `
+        <input type="text" id="${inputId}" placeholder="മറ്റേതെങ്കിലും ഇനം ചേർക്കാൻ..."
+          onkeydown="if(event.key==='Enter') addCustomItem('${categoryKey}', '${inputId}')" />
+        <button type="button" class="btn btn-tiny" onclick="addCustomItem('${categoryKey}', '${inputId}')">+ ചേർക്കുക</button>
+      `;
+      container.appendChild(customDiv);
+    }
+
+    function toggleItemCheck(categoryKey, index, checked) {
+      const item = appState[activeDateId][categoryKey][index];
+      item.selected = checked;
+      if (checked && (!item.qty || parseFloat(item.qty) <= 0)) {
+        item.qty = "1";
+      } else if (!checked) {
+        item.qty = "";
+      }
+      saveState();
+      renderAll();
+    }
+
+    function stepQuantity(categoryKey, index, delta) {
+      const item = appState[activeDateId][categoryKey][index];
+      let current = parseFloat(item.qty) || 0;
+      const effectiveDelta = item.unit === "എണ്ണം" ? (delta > 0 ? 1 : -1) : delta;
+      let next = Math.max(0, Math.round((current + effectiveDelta) * 100) / 100);
+      item.qty = next > 0 ? String(next) : "";
+      item.selected = next > 0;
+      saveState();
+      renderAll();
+    }
+
+    function updateQuantity(categoryKey, index, val) {
+      const item = appState[activeDateId][categoryKey][index];
+      item.qty = val;
+      const num = parseFloat(val);
+      item.selected = !isNaN(num) && num > 0;
+      saveState();
+      renderDateTabs();
+      renderSummary();
+    }
+
+    function updateUnit(categoryKey, index, newUnit) {
+      if (!ALLOWED_UNITS.includes(newUnit)) return;
+      appState[activeDateId][categoryKey][index].unit = newUnit;
+      saveState();
+      renderAll();
+    }
+
+    function addCustomItem(categoryKey, inputId) {
+      const input = document.getElementById(inputId);
+      const name = input.value.trim();
+      if (!name) return;
+      appState[activeDateId][categoryKey].push({
+        name,
+        qty: "1",
+        unit: categoryKey === "flowers" ? "kg" : "എണ്ണം",
+        selected: true
+      });
+      input.value = "";
+      saveState();
+      renderAll();
+      showToast(`"${name}" ലിസ്റ്റിൽ ചേർത്തു`);
+    }
+
+    function updateDateMeta() {
+      const day = appState[activeDateId];
+      day.note = document.getElementById("eventTitleInput").value;
+      day.time = document.getElementById("eventTimeInput").value;
+      saveState();
+      renderSummary();
+    }
+
+    function copyFromPreviousDay() {
+      const idx = DATES_CONFIG.findIndex(d => d.id === activeDateId);
+      if (idx <= 0) {
+        showToast("ഇത് ആദ്യത്തെ തീയതിയാണ് (24-11-2026)");
+        return;
+      }
+      const prevId = DATES_CONFIG[idx - 1].id;
+      appState[activeDateId] = JSON.parse(JSON.stringify(appState[prevId]));
+      saveState();
+      renderAll();
+      showToast(`${prevId}-ലെ ലിസ്റ്റ് ${activeDateId}-ലേക്ക് പകർത്തി`);
+    }
+
+    function clearCurrentDay() {
+      appState[activeDateId] = createBlankDayData();
+      saveState();
+      renderAll();
+      showToast(`${activeDateId}-ലെ ലിസ്റ്റ് ക്ലിയർ ചെയ്തു`);
+    }
+
+    function renderSummary() {
+      const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
+      const dayData = appState[activeDateId];
+      const { flowers, garlands } = getActiveItemsForDate(activeDateId);
+
+      document.getElementById("flowersBadge").textContent = `${flowers.length} ഇനം`;
+      document.getElementById("garlandsBadge").textContent = `${garlands.length} ഇനം`;
+
+      const timeStr = dayData.time ? ` | സമയം: ${formatTime12Hour(dayData.time)}` : "";
+      const noteStr = dayData.note ? ` (${dayData.note})` : "";
+      document.getElementById("summaryHeading").textContent =
+        `📋 ${dateObj.label} (${dateObj.dayMl})${timeStr}${noteStr}`;
+
+      const fUl = document.getElementById("summaryFlowersList");
+      const gUl = document.getElementById("summaryGarlandsList");
+
+      fUl.innerHTML = flowers.length
+        ? flowers.map(f => `<li><span>${f.name}</span><span class="summary-qty">${f.qty || 1} ${f.unit}</span></li>`).join("")
+        : `<li class="empty-msg">പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല</li>`;
+
+      gUl.innerHTML = garlands.length
+        ? garlands.map(g => `<li><span>${g.name}</span><span class="summary-qty">${g.qty || 1} ${g.unit}</span></li>`).join("")
+        : `<li class="empty-msg">മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല</li>`;
+    }
+
+    function renderAll() {
+      const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
+      const dayData = appState[activeDateId];
+
+      document.getElementById("activeDateHeading").textContent = `${dateObj.label} (${dateObj.dayMl})`;
+      document.getElementById("eventTitleInput").value = dayData.note || "";
+      document.getElementById("eventTimeInput").value = dayData.time || "06:00";
+
+      renderDateTabs();
+      renderCategoryItems("flowers", "flowersListContainer");
+      renderCategoryItems("garlands", "garlandsListContainer");
+      renderSummary();
+    }
+
+    function copyCurrentListText() {
+      const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
+      const dayData = appState[activeDateId];
+      const { flowers, garlands, total } = getActiveItemsForDate(activeDateId);
+
+      if (total === 0) {
+        showToast("കോപ്പി ചെയ്യാൻ ഇനങ്ങൾ തിരഞ്ഞെടുക്കുക");
+        return;
+      }
+
+      let lines = [];
+      lines.push(`*തീയതി: ${dateObj.label} (${dateObj.dayMl})*`);
+      if (dayData.time) lines.push(`സമയം: ${formatTime12Hour(dayData.time)}`);
+      if (dayData.note) lines.push(`കുറിപ്പ്: ${dayData.note}`);
+      lines.push("");
+
+      if (flowers.length > 0) {
+        lines.push("*പുഷ്പങ്ങൾ:*");
+        flowers.forEach((f, idx) => lines.push(`${idx + 1}. ${f.name} - ${f.qty || 1} ${f.unit}`));
+        lines.push("");
+      }
+
+      if (garlands.length > 0) {
+        lines.push("*മാലകൾ:*");
+        garlands.forEach((g, idx) => lines.push(`${idx + 1}. ${g.name} - ${g.qty || 1} ${g.unit}`));
+      }
+
+      navigator.clipboard.writeText(lines.join("\n")).then(() => {
+        showToast("ലിസ്റ്റ് കോപ്പി ചെയ്തു!");
+      });
+    }
+
+    function buildDatePdfHtml(dateObj, includeEmpty = false) {
+      const dayData = appState[dateObj.id];
+      const { flowers, garlands, total } = getActiveItemsForDate(dateObj.id);
+
+      if (!includeEmpty && total === 0) return "";
+
+      const flowerRows = flowers.length
+        ? flowers.map((f, i) => `
+            <tr>
+              <td>${i + 1}. ${f.name}</td>
+              <td class="qty-col">${f.qty || 1} ${f.unit}</td>
+            </tr>`).join("")
+        : `<tr><td colspan="2" style="color:#6b7280;font-style:italic;">ഇനങ്ങൾ ഇല്ല</td></tr>`;
+
+      const garlandRows = garlands.length
+        ? garlands.map((g, i) => `
+            <tr>
+              <td>${i + 1}. ${g.name}</td>
+              <td class="qty-col">${g.qty || 1} ${g.unit}</td>
+            </tr>`).join("")
+        : `<tr><td colspan="2" style="color:#6b7280;font-style:italic;">ഇനങ്ങൾ ഇല്ല</td></tr>`;
+
+      return `
+        <div class="pdf-page-block">
+          <div class="pdf-top-banner">
+            <div>
+              <div class="pdf-date-title">📅 തീയതി: ${dateObj.label} (${dateObj.dayMl})</div>
+              ${dayData.note ? `<div style="font-size:13px;color:#374151;margin-top:2px;">കുറിപ്പ്: <strong>${dayData.note}</strong></div>` : ""}
+            </div>
+            <div class="pdf-meta-right">
+              ${dayData.time ? `<div>⏰ സമയം: ${formatTime12Hour(dayData.time)}</div>` : ""}
+              <div>ആകെ ഇനങ്ങൾ: ${total}</div>
+            </div>
+          </div>
+
+          <div class="pdf-two-col">
+            <div>
+              <table class="pdf-table">
+                <thead>
+                  <tr>
+                    <th>പുഷ്പങ്ങൾ</th>
+                    <th style="text-align:right;">അളവ്</th>
+                  </tr>
+                </thead>
+                <tbody>${flowerRows}</tbody>
+              </table>
+            </div>
+
+            <div>
+              <table class="pdf-table">
+                <thead>
+                  <tr>
+                    <th style="background:#dcfce7;color:#14532d;">മാലകൾ</th>
+                    <th style="background:#dcfce7;color:#14532d;text-align:right;">അളവ്</th>
+                  </tr>
+                </thead>
+                <tbody>${garlandRows}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadSingleDatePDF() {
+      const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
+      const pdfArea = document.getElementById("pdf-render-area");
+      pdfArea.innerHTML = `
+        <div style="text-align:center;margin-bottom:16px;">
+          <h2 style="color:#7c1d16;font-size:20px;margin-bottom:2px;">പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h2>
+          <p style="font-size:12px;color:#4b5563;">${dateObj.label} (${dateObj.dayMl})</p>
+        </div>
+        ${buildDatePdfHtml(dateObj, true)}
+      `;
+
+      showToast("PDF തയ്യാറാക്കുന്നു...");
+      const opt = {
+        margin: 10,
+        filename: `Flower_List_${dateObj.id}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+      };
+
+      html2pdf().set(opt).from(pdfArea).save().then(() => {
+        pdfArea.innerHTML = "";
+        showToast(`${dateObj.id} PDF ഡൗൺലോഡ് ചെയ്തു!`);
+      });
+    }
+
+    function downloadAllDatesPDF() {
+      const pdfArea = document.getElementById("pdf-render-area");
+
+      const populatedBlocks = DATES_CONFIG.map(d => buildDatePdfHtml(d, false)).filter(Boolean);
+      const blocksToRender = populatedBlocks.length > 0
+        ? populatedBlocks
+        : DATES_CONFIG.map(d => buildDatePdfHtml(d, true));
+
+      pdfArea.innerHTML = `
+        <div style="text-align:center;margin-bottom:18px;border-bottom:2px solid #b45309;padding-bottom:10px;">
+          <h2 style="color:#7c1d16;font-size:21px;margin-bottom:4px;">പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h2>
+          <p style="font-size:13px;color:#374151;font-weight:700;">തീയതി: 24-11-2026 മുതൽ 02-12-2026 വരെ</p>
+        </div>
+        ${blocksToRender.join("")}
+      `;
+
+      showToast("9 ദിവസത്തെയും PDF തയ്യാറാക്കുന്നു...");
+      const opt = {
+        margin: 10,
+        filename: "Flower_Garland_List_24-11-2026_to_02-12-2026.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+      };
+
+      html2pdf().set(opt).from(pdfArea).save().then(() => {
+        pdfArea.innerHTML = "";
+        showToast("9 ദിവസത്തെയും PDF ഡൗൺലോഡ് ചെയ്തു!");
+      });
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
 
