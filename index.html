@@ -836,7 +836,7 @@
       <div class="summary-grid">
         <div class="summary-box">
           <h4>പുഷ്പങ്ങൾ</h4>
-                       <ul class="summary-list" id="summaryFlowersList"></ul>
+                    <ul class="summary-list" id="summaryFlowersList"></ul>
         </div>
         <div class="summary-box garland-box">
           <h4>മാലകൾ</h4>
@@ -844,15 +844,16 @@
         </div>
       </div>
     </section>
-
-    <!-- 9-Day Print View -->
-    <section id="all-days-print-area"></section>
   </main>
+
+  <!-- Hidden Area Used to Render Clean PDFs -->
+  <div id="pdf-render-area"></div>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script>
+    // 1. Fixed 9 Dates from 24-11-2026 to 02-12-2026
     const DATES_CONFIG = [
       { id: "24-11-2026", label: "24-11-2026", dayMl: "ചൊവ്വ", dayEn: "Tue" },
       { id: "25-11-2026", label: "25-11-2026", dayMl: "ബുധൻ", dayEn: "Wed" },
@@ -865,6 +866,7 @@
       { id: "02-12-2026", label: "02-12-2026", dayMl: "ബുധൻ", dayEn: "Wed" }
     ];
 
+    // 2. Exact Master Lists Requested by User
     const DEFAULT_FLOWERS = [
       { name: "ചെത്തി", defaultUnit: "kg" },
       { name: "തുളസി", defaultUnit: "kg" },
@@ -885,8 +887,10 @@
       { name: "തുമ്പികൈ മാല", defaultUnit: "എണ്ണം" }
     ];
 
+    // 3. Four Allowed Quantity Units
     const ALLOWED_UNITS = ["kg", "അടി", "മുഴം", "എണ്ണം"];
-    const STORAGE_KEY = "malayalam_flower_garland_list_2026_v5";
+
+    const STORAGE_KEY = "malayalam_flower_garland_list_2026_v2";
     let activeDateId = DATES_CONFIG[0].id;
     let appState = loadState();
 
@@ -918,7 +922,7 @@
             if (!parsed[d.id]) {
               parsed[d.id] = createBlankDayData();
             } else {
-              ["flowers", "garlands"].forEach(cat => {
+              ['flowers', 'garlands'].forEach(cat => {
                 parsed[d.id][cat].forEach(item => {
                   if (!ALLOWED_UNITS.includes(item.unit)) {
                     item.unit = "kg";
@@ -1133,15 +1137,6 @@
       showToast(`${activeDateId}-ലെ ലിസ്റ്റ് ക്ലിയർ ചെയ്തു`);
     }
 
-    function buildSummaryListHtml(items, emptyText) {
-      if (!items.length) {
-        return `<li class="empty-msg">${emptyText}</li>`;
-      }
-      return items
-        .map(item => `<li><span>${item.name}</span><span class="summary-qty">${item.qty || 1} ${item.unit}</span></li>`)
-        .join("");
-    }
-
     function renderSummary() {
       const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
       const dayData = appState[activeDateId];
@@ -1155,10 +1150,16 @@
       document.getElementById("summaryHeading").textContent =
         `📋 ${dateObj.label} (${dateObj.dayMl})${timeStr}${noteStr}`;
 
-      document.getElementById("summaryFlowersList").innerHTML =
-        buildSummaryListHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
-      document.getElementById("summaryGarlandsList").innerHTML =
-        buildSummaryListHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല");
+      const fUl = document.getElementById("summaryFlowersList");
+      const gUl = document.getElementById("summaryGarlandsList");
+
+      fUl.innerHTML = flowers.length
+        ? flowers.map(f => `<li><span>${f.name}</span><span class="summary-qty">${f.qty || 1} ${f.unit}</span></li>`).join("")
+        : `<li class="empty-msg">പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല</li>`;
+
+      gUl.innerHTML = garlands.length
+        ? garlands.map(g => `<li><span>${g.name}</span><span class="summary-qty">${g.qty || 1} ${g.unit}</span></li>`).join("")
+        : `<li class="empty-msg">മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല</li>`;
     }
 
     function renderAll() {
@@ -1207,64 +1208,129 @@
       });
     }
 
-    function runPrintMode(modeClass) {
-      document.body.classList.remove("print-single-mode", "print-all-mode");
-      document.body.classList.add(modeClass);
-      setTimeout(() => {
-        window.print();
-        setTimeout(() => {
-          document.body.classList.remove("print-single-mode", "print-all-mode");
-        }, 500);
-      }, 150);
+    function buildDatePdfHtml(dateObj, includeEmpty = false) {
+      const dayData = appState[dateObj.id];
+      const { flowers, garlands, total } = getActiveItemsForDate(dateObj.id);
+
+      if (!includeEmpty && total === 0) return "";
+
+      const flowerRows = flowers.length
+        ? flowers.map((f, i) => `
+            <tr>
+              <td>${i + 1}. ${f.name}</td>
+              <td class="qty-col">${f.qty || 1} ${f.unit}</td>
+            </tr>`).join("")
+        : `<tr><td colspan="2" style="color:#6b7280;font-style:italic;">ഇനങ്ങൾ ഇല്ല</td></tr>`;
+
+      const garlandRows = garlands.length
+        ? garlands.map((g, i) => `
+            <tr>
+              <td>${i + 1}. ${g.name}</td>
+              <td class="qty-col">${g.qty || 1} ${g.unit}</td>
+            </tr>`).join("")
+        : `<tr><td colspan="2" style="color:#6b7280;font-style:italic;">ഇനങ്ങൾ ഇല്ല</td></tr>`;
+
+      return `
+        <div class="pdf-page-block">
+          <div class="pdf-top-banner">
+            <div>
+              <div class="pdf-date-title">📅 തീയതി: ${dateObj.label} (${dateObj.dayMl})</div>
+              ${dayData.note ? `<div style="font-size:13px;color:#374151;margin-top:2px;">കുറിപ്പ്: <strong>${dayData.note}</strong></div>` : ""}
+            </div>
+            <div class="pdf-meta-right">
+              ${dayData.time ? `<div>⏰ സമയം: ${formatTime12Hour(dayData.time)}</div>` : ""}
+              <div>ആകെ ഇനങ്ങൾ: ${total}</div>
+            </div>
+          </div>
+
+          <div class="pdf-two-col">
+            <div>
+              <table class="pdf-table">
+                <thead>
+                  <tr>
+                    <th>പുഷ്പങ്ങൾ</th>
+                    <th style="text-align:right;">അളവ്</th>
+                  </tr>
+                </thead>
+                <tbody>${flowerRows}</tbody>
+              </table>
+            </div>
+
+            <div>
+              <table class="pdf-table">
+                <thead>
+                  <tr>
+                    <th style="background:#dcfce7;color:#14532d;">മാലകൾ</th>
+                    <th style="background:#dcfce7;color:#14532d;text-align:right;">അളവ്</th>
+                  </tr>
+                </thead>
+                <tbody>${garlandRows}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     function downloadSingleDatePDF() {
-      renderSummary();
-      showToast("'Save as PDF' തിരഞ്ഞെടുക്കുക...");
-      runPrintMode("print-single-mode");
+      const dateObj = DATES_CONFIG.find(d => d.id === activeDateId);
+      const pdfArea = document.getElementById("pdf-render-area");
+      pdfArea.innerHTML = `
+        <div style="text-align:center;margin-bottom:16px;">
+          <h2 style="color:#7c1d16;font-size:20px;margin-bottom:2px;">പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h2>
+          <p style="font-size:12px;color:#4b5563;">${dateObj.label} (${dateObj.dayMl})</p>
+        </div>
+        ${buildDatePdfHtml(dateObj, true)}
+      `;
+
+      showToast("PDF തയ്യാറാക്കുന്നു...");
+      const opt = {
+        margin: 10,
+        filename: `Flower_List_${dateObj.id}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+      };
+
+      html2pdf().set(opt).from(pdfArea).save().then(() => {
+        pdfArea.innerHTML = "";
+        showToast(`${dateObj.id} PDF ഡൗൺലോഡ് ചെയ്തു!`);
+      });
     }
 
     function downloadAllDatesPDF() {
-      const populated = DATES_CONFIG.filter(d => getActiveItemsForDate(d.id).total > 0);
-      const daysToShow = populated.length > 0 ? populated : DATES_CONFIG;
+      const pdfArea = document.getElementById("pdf-render-area");
 
-      const html = `
-        <div style="text-align:center;margin-bottom:14px;border-bottom:2px solid #9c2b23;padding-bottom:8px;">
-          <h2 style="color:#781d17;font-size:1.25rem;">പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h2>
-          <p style="font-size:0.88rem;font-weight:700;">തീയതി: 24-11-2026 മുതൽ 02-12-2026 വരെ</p>
+      const populatedBlocks = DATES_CONFIG.map(d => buildDatePdfHtml(d, false)).filter(Boolean);
+      const blocksToRender = populatedBlocks.length > 0
+        ? populatedBlocks
+        : DATES_CONFIG.map(d => buildDatePdfHtml(d, true));
+
+      pdfArea.innerHTML = `
+        <div style="text-align:center;margin-bottom:18px;border-bottom:2px solid #b45309;padding-bottom:10px;">
+          <h2 style="color:#7c1d16;font-size:21px;margin-bottom:4px;">പുഷ്പങ്ങൾ &amp; മാലകൾ ലിസ്റ്റ്</h2>
+          <p style="font-size:13px;color:#374151;font-weight:700;">തീയതി: 24-11-2026 മുതൽ 02-12-2026 വരെ</p>
         </div>
-        ${daysToShow.map(dateObj => {
-          const dayData = appState[dateObj.id];
-          const { flowers, garlands } = getActiveItemsForDate(dateObj.id);
-          const timeStr = dayData.time ? ` | സമയം: ${formatTime12Hour(dayData.time)}` : "";
-          const noteStr = dayData.note ? ` (${dayData.note})` : "";
-          return `
-            <div class="print-day-block">
-              <div style="font-weight:800;color:#781d17;margin-bottom:8px;">
-                📅 ${dateObj.label} (${dateObj.dayMl})${timeStr}${noteStr}
-              </div>
-              <div class="summary-grid">
-                <div class="summary-box">
-                  <h4>പുഷ്പങ്ങൾ</h4>
-                  <ul class="summary-list">${buildSummaryListHtml(flowers, "പുഷ്പങ്ങൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}</ul>
-                </div>
-                <div class="summary-box garland-box">
-                  <h4>മാലകൾ</h4>
-                  <ul class="summary-list">${buildSummaryListHtml(garlands, "മാലകൾ തിരഞ്ഞെടുത്തിട്ടില്ല")}</ul>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join("")}
+        ${blocksToRender.join("")}
       `;
 
-      document.getElementById("all-days-print-area").innerHTML = html;
-      showToast("9 ദിവസത്തെയും PDF - 'Save as PDF' തിരഞ്ഞെടുക്കുക...");
-      runPrintMode("print-all-mode");
+      showToast("9 ദിവസത്തെയും PDF തയ്യാറാക്കുന്നു...");
+      const opt = {
+        margin: 10,
+        filename: "Flower_Garland_List_24-11-2026_to_02-12-2026.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+      };
+
+      html2pdf().set(opt).from(pdfArea).save().then(() => {
+        pdfArea.innerHTML = "";
+        showToast("9 ദിവസത്തെയും PDF ഡൗൺലോഡ് ചെയ്തു!");
+      });
     }
 
     renderAll();
   </script>
 </body>
-  </html>
-  
+</html>
